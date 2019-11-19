@@ -1,11 +1,17 @@
 import axios from 'axios';
 
-class BaseService {  
+class BaseService {
     getUsers() {
         return axios.get('http://localhost:8080/api/users')
+            .catch(function (error) {
+                console.log("Error ", error);
+            });
     };
-    postUser(){
-        
+    postUser(userObject) {
+        return axios.post('http://localhost:8080/api/users', userObject)
+            .catch(function (error) {
+                console.log("Error ", error);
+            });
     };
 }
 
