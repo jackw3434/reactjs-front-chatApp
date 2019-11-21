@@ -1,47 +1,94 @@
 import React from 'react';
-import BaseService from '../functions/BaseService';
+import { getUsers, getUserByID, editUserByID, postUser, deleteUser } from '../functions/userFunctions/userFunctions'
 
 export default class UserList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [          
-            ],
-            name: String,
-            email: String,
-            role: String,
-            password: String
+            name: "",
+            email: "",
+            password: ""
         };
     }
 
-    componentDidUpdate() {
-        console.log("props ", this.props);
-        console.log("state ", this.state);
+    editUserButton() {
+
+        let { name, email, password } = this.state;
+
+        if (!name || !email || !password) {
+            console.log("Missing Form Fields");
+        } else {
+
+            let editedUser = {
+                "name": this.state.name,
+                "email": this.state.email,
+                "password": this.state.password
+            };
+
+            editUserByID(this.props.users[0].id, editedUser)
+                .then(response => {
+                    getUsers().then(response => {
+                        this.props.view(response);
+                    });
+                })
+
+            this.refs.name.value = "";
+            this.refs.email.value = "";
+            this.refs.password.value = "";
+            this.setState({ name: "", email: "", password: "" });
+        }
+    }
+
+    postUserButton() {
+
+        let { name, email, password } = this.state;
+
+        if (!name || !email || !password) {
+            console.log("Missing Form Fields");
+        } else {
+
+            let newUser = {
+                "name": this.state.name,
+                "email": this.state.email,
+                "password": this.state.password
+            };
+
+            postUser(newUser)
+                .then(response => {
+                    getUsers().then(response => {
+                        this.props.view(response);
+                    });
+                })
+
+            this.refs.name.value = "";
+            this.refs.email.value = "";
+            this.refs.password.value = "";
+            this.setState({ name: "", email: "", password: "" });
+        }
+    }
+
+    deleteUserButton() {
+        if (this.props.users[0]) {
+            deleteUser(this.props.users[0].id).then(response => {
+                getUsers().then(response => {
+                    this.props.view(response);
+                });
+            });
+        } else {
+            console.log("No Users in the List to delete");
+        }
+    }
+
+    setName(name) {
+        this.setState({ name: name.target.value })
     };
 
-    handleClick() {
+    setEmail(email) {
+        this.setState({ email: email.target.value })
+    };
 
-        let newUser = {
-            "name": this.state.name,
-            "email": this.state.email,
-            "role": this.state.role,
-            "password": this.state.password
-        };
-
-        BaseService.postUser(newUser)
-            .then(response => {
-                console.log("response ", response);
-                BaseService.getUsers().then(response => {
-                    this.setState({ users: response.data.users });
-                    console.log("done ", response);
-                })
-            })     
-    }
-
-   
-    setEmail(email){
-        this.setState({email: email})
-        console.log(email.data);
+    setPassword(password) {
+        this.setState({ password: password.target.value })
     };
 
     render() {
@@ -52,19 +99,20 @@ export default class UserList extends React.Component {
                     <ul>
                         {this.props.users.map((user, index) =>
                             <li key={index}>
-                                <a title={"ID: " + user._id +  " Name: " + user.name}>{user.name}</a>
+                                <a title={"ID: " + user.id + " Name: " + user.name}>{user.name}</a>
                             </li>
                         )}
                     </ul>
                 </div>
                 <div>
-              
-                    <input type="text"  onChange={(email) =>this.setEmail(email)} /><br/>
-                    <input type="text" onChange={this.handleChange} />
-                    {/* <input type="text" value={this.state.role} onChange={this.handleChange} />
-                    <input type="text" value={this.state.password} onChange={this.handleChange} /> */}
-                    <button onClick={() => this.handleClick()}>Post New user, Get and refresh</button>
-                    {/* <button onClick={this.props.postUserOnClick}>Delete All</button> */}
+
+                    <input placeholder="Name" type="text" ref="name" onChange={(name) => this.setName(name)} /><br />
+                    <input placeholder="Email" type="text" ref="email" onChange={(email) => this.setEmail(email)} /><br />
+                    <input placeholder="Password" type="text" ref="password" onChange={(password) => this.setPassword(password)} /><br />
+
+                    <button onClick={() => this.postUserButton()}>Post New user, Get and refresh</button>
+                    <button onClick={() => this.deleteUserButton()}>Delete First user</button>
+                    <button onClick={() => this.editUserButton()}>Edit First user</button>
                 </div>
             </div>
         )
