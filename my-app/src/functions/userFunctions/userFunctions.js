@@ -1,12 +1,17 @@
 import axios from 'axios';
 
-export const getUsers = async () => {
-    return await axios.get('http://localhost:8080/api/users')
+export const getUsers = () => {
+    return axios.get('http://localhost:8080/api/users')
         .then(response => {
             console.log("getusers() ", response.data);
             return response.data.users;
         })
         .catch(function (error) {
+
+            if (error == "Error: Network Error") {
+                console.log("GetUsers() Network Error: ", error);
+                return;
+            }
             console.log(error.response);
             return error.response;
         });
@@ -25,7 +30,7 @@ export const getUserByID = (userID) => {
 };
 
 export const editUserByID = (userID, editedObject) => {
-    return axios.put('http://localhost:8080/api/users/' + userID,editedObject)
+    return axios.put('http://localhost:8080/api/users/' + userID, editedObject)
         .then(response => {
             console.log("editUserByID() ", response.data);
             return response.data.users;
@@ -43,8 +48,16 @@ export const postUser = (userObject) => {
             return response;
         })
         .catch(function (error) {
-            console.log(error.response);
-            return error.response;
+            if (error == "Error: Request failed with status code 409") {
+                console.log(error.response);
+                return error.response;
+            }
+            if (error == "Error: Network Error") {
+                console.log("postUser() Network Error: ", error);
+                return;
+            }
+            console.log("errorroror", error);
+            return error;
         });
 };
 

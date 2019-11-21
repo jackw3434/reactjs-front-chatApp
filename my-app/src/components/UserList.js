@@ -68,7 +68,7 @@ export default class UserList extends React.Component {
     }
 
     deleteUserButton() {
-        if (this.props.users[0]) {
+        if (this.props.users && this.props.users[0]) {
             deleteUser(this.props.users[0].id).then(response => {
                 getUsers().then(response => {
                     this.props.view(response);
@@ -94,16 +94,18 @@ export default class UserList extends React.Component {
     render() {
         return (
             <div>
-                <div>
-                    <p>{this.props.listTitle}</p>
-                    <ul>
-                        {this.props.users.map((user, index) =>
-                            <li key={index}>
-                                <a title={"ID: " + user.id + " Name: " + user.name}>{user.name}</a>
-                            </li>
-                        )}
-                    </ul>
-                </div>
+                {this.props.users &&
+                    <div>
+                        <p>{this.props.listTitle}</p>
+                        <ul>
+                            {this.props.users.map((user, index) =>
+                                <li key={index}>
+                                    <a title={"ID: " + user.id + " Name: " + user.name}>{user.name}</a>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+                }
                 <div>
 
                     <input placeholder="Name" type="text" ref="name" onChange={(name) => this.setName(name)} /><br />

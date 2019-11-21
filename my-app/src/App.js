@@ -25,11 +25,15 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <UserList
-            view={(res) => this.changeListState(res)}
-            users={this.state.users}
-            listTitle="My User List">
-          </UserList>
+          {this.state.users ?
+            <UserList
+              view={(res) => this.changeListState(res)}
+              users={this.state.users}
+              listTitle="My User List">
+            </UserList>
+            :
+            <p>Users Not Found</p>
+          }
         </header>
       </div>
     );
