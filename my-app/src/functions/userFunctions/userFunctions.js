@@ -45,7 +45,7 @@ export const postUser = (userObject) => {
     return axios.post('http://localhost:8080/api/users', userObject)
         .then(response => {
             console.log("postUsers() ", response.data);
-            return response;
+            return response.data;
         })
         .catch(function (error) {
             if (error == "Error: Request failed with status code 409") {
@@ -56,7 +56,7 @@ export const postUser = (userObject) => {
                 console.log("postUser() Network Error: ", error);
                 return;
             }
-            console.log("errorroror", error);
+            console.log("error", error);
             return error;
         });
 };

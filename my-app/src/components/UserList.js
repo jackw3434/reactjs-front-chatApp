@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUsers, getUserByID, editUserByID, postUser, deleteUser } from '../functions/userFunctions/userFunctions'
+import { getUsers, editUserByID, postUser, deleteUser } from '../functions/userFunctions/userFunctions'
 
 export default class UserList extends React.Component {
     constructor(props) {
