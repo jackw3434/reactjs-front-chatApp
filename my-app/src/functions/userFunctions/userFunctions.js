@@ -62,7 +62,7 @@ export const postUser = (userObject) => {
 };
 
 export const deleteUser = (userID) => {
-    return axios.delete('http://localhost:8080/api/user/' + userID)
+    return axios.delete('http://localhost:8080/api/users/' + userID)
         .then((response) => {
             console.log("deleteUserByID() ", response.data);
             return response;

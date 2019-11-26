@@ -20,9 +20,9 @@ export default class UserList extends React.Component {
         } else {
 
             let editedUser = {
-                "name": this.state.name,
-                "email": this.state.email,
-                "password": this.state.password
+                "name": name,
+                "email": email,
+                "password": password
             };
 
             editUserByID(this.props.users[0].id, editedUser)
@@ -48,9 +48,9 @@ export default class UserList extends React.Component {
         } else {
 
             let newUser = {
-                "name": this.state.name,
-                "email": this.state.email,
-                "password": this.state.password
+                "name": name,
+                "email": email,
+                "password": password
             };
 
             postUser(newUser)
@@ -69,6 +69,7 @@ export default class UserList extends React.Component {
 
     deleteUserButton() {
         if (this.props.users && this.props.users[0]) {
+            // deleting the first user of the list, test purposes
             deleteUser(this.props.users[0].id).then(response => {
                 getUsers().then(response => {
                     this.props.view(response);
@@ -94,7 +95,8 @@ export default class UserList extends React.Component {
     render() {
         return (
             <div>
-                {this.props.users &&
+
+                {this.props.users ?
                     <div>
                         <p>{this.props.listTitle}</p>
                         <ul>
@@ -105,6 +107,8 @@ export default class UserList extends React.Component {
                             )}
                         </ul>
                     </div>
+                    :
+                    <p>Users Not Found</p>
                 }
                 <div>
 
@@ -116,6 +120,7 @@ export default class UserList extends React.Component {
                     <button onClick={() => this.deleteUserButton()}>Delete First user</button>
                     <button onClick={() => this.editUserButton()}>Edit First user</button>
                 </div>
+
             </div>
         )
     }
