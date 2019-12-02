@@ -10,7 +10,7 @@ export default class MessageItem extends React.Component {
 
     render() {
         return (
-            <div style={{ backgroundColor: "red", width: "80%", margin: 10 }}>
+            <div style={{ backgroundColor: "#36393F", width: "80%", margin: 10 }}>
                 <p>Avatar</p>
                 <p>{this.props.userMessage}</p>
             </div>

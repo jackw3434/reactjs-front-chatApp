@@ -46,27 +46,27 @@ export default class App extends React.Component {
 
     messageElement.innerText = message;
     messageContainer.append(messageElement);
-  }
+  } 
 
   render() {
 
 
     return (
       <div className="App-container">
-        <div className="friendsList" style={{ backgroundColor: "green", width: "20%" }}>
+        <div className="friendsList" style={{ backgroundColor: "#2F3136", width: "20%" }}>
           <p>Friends List</p>
-          <UserList
+          {/* <UserList
             view={(res) => this.changeListState(res)}
             users={this.state.users}
             listTitle="My User List">
-          </UserList>
+          </UserList> */}
         </div>
-        <div className="chatWindow" style={{ backgroundColor: "orange", width: "80%", height: "100vh" }}>
+        <div className="chatWindow" style={{ backgroundColor: "#36393F", width: "80%", height: "100vh" }}>
           <p>Chat Window</p>
-          <div id="chatWindow"className="chatWindow" style={{ backgroundColor: "blue", width: "80%", height: "80%", overflow: "auto", position: "absolute" }}>
+          <div id="chatWindow"className="chatWindow" style={{ backgroundColor: "#36393F", width: "80%", height: "80%", overflow: "auto", position: "absolute" }}>
             <MessegeItem userMessage={this.state.response}></MessegeItem>
           </div>
-          <div style={{ backgroundColor: "yellow", position: "absolute", bottom: 5, width: "70%", height: 50, }}>
+          <div style={{ backgroundColor: "#40444B", position: "absolute", justifyContent:"center",alignItems:'center', bottom: 25, width: "70%", height: 50, }}>
             <input id="messageInput" type="text" ref="messageInput" />
             <button id="send-button" onClick={() => this.sendMessege()}>Send</button>
           </div>
