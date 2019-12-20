@@ -33,12 +33,9 @@ export default class MainPage extends React.Component {
         });
 
         if (this.state.view) {
-           // let name = prompt("What is your name?")
-
             this.appendMessage("You Joined");
             socket.emit("new-user", this.state.name);
         }
-
 
         socket.on("user-connected", name => {
             this.appendMessage(name + " connected");
