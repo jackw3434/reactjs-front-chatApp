@@ -3,7 +3,7 @@ import '../../App.css';
 import UserList from '../UserList';
 import MessegeItem from '../MessegeItem';
 import LoginPage from '../pages/loginPage';
-import { getUsers } from '../../functions/userFunctions/userFunctions';
+import { getUsers } from '../axiosFunctions/userFunctions';
 import socketIOClient from 'socket.io-client';
 const socket = socketIOClient("http://localhost:7000");
 
@@ -15,11 +15,13 @@ export default class MainPage extends React.Component {
             message: "",
             response: "",
             view: true,
-            name: prompt("What is your name?")
+            loggedInUser: this.props.location.state.user[0],
+            name: this.props.location.state.user[0].name
         };
     }
 
     componentDidMount() {
+        console.log("loggedInUser", this.state.loggedInUser);
         getUsers().then(response => {
             this.setState({ users: response });
         })
@@ -31,7 +33,7 @@ export default class MainPage extends React.Component {
         });
 
         if (this.state.view) {
-            //let name = prompt("What is your name?")
+           // let name = prompt("What is your name?")
 
             this.appendMessage("You Joined");
             socket.emit("new-user", this.state.name);
@@ -57,12 +59,11 @@ export default class MainPage extends React.Component {
         }));
     };
 
-
     sendMessege() {
         this.appendMessage("You: " + this.refs.messageInput.value);
         socket.emit('send-chat-message', this.refs.messageInput.value);
         this.refs.messageInput.value = "";
-    }
+    };
 
     appendMessage(message) {
         let messageElement = document.createElement('div');
