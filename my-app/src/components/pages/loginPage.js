@@ -21,17 +21,20 @@ export default class LoginPage extends React.Component {
             console.log("Missing Form Fields");
         } else {
 
-            let newUser = {
+            let user = {
                 "email": email,
                 "password": password
             };
 
-            loginUser(newUser)
+            loginUser(user)
                 .then(response => {
-                    this.setState({ redirect: true, userData: response.user });
-                    console.log("login response : ", response);
-                    console.log("redirecting ");
-                })
+                    if (response.data.successMessage == "User Logged In" && response.data.accessToken) {
+                        this.setState({ redirect: true, userData: response.data });
+                        console.log("redirecting ");
+                    } else {
+                        console.log("failed login response : ", response);
+                    }
+                });
 
             this.refs.email.value = "";
             this.refs.password.value = "";

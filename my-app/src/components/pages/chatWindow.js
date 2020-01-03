@@ -1,5 +1,5 @@
 import React from 'react';
-import MessegeItem from '../../components/MessegeItem';
+import MessageItem from '../../components/MessageItem';
 
 export default class ChatWindow extends React.Component {
     constructor(props) {
@@ -13,7 +13,7 @@ export default class ChatWindow extends React.Component {
             <div>
                 <p>Chat Window</p>
                 <div style={{ display: "flex", flexDirection: "column", backgroundColor: "#36393F", width: "80%", height: "80%", overflow: "auto", position: "absolute" }}>
-                    <MessegeItem userMessage={this.state.response}></MessegeItem>
+                    <MessageItem userMessage={this.state.response}></MessageItem>
                 </div>
             </div>
         )

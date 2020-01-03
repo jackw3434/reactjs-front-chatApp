@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../App.css';
 import UserList from '../UserList';
-import MessegeItem from '../MessegeItem';
+import MessageItem from '../MessageItem';
 import LoginPage from '../pages/loginPage';
 import { getUsers } from '../axiosFunctions/userFunctions';
 import socketIOClient from 'socket.io-client';
@@ -15,8 +15,8 @@ export default class MainPage extends React.Component {
             message: "",
             response: "",
             view: true,
-            loggedInUser: this.props.location.state.user[0],
-            name: this.props.location.state.user[0].name
+            loggedInUser: this.props.location.state.user,
+            name: this.props.location.state.user.userData.name
         };
     }
 
@@ -56,7 +56,7 @@ export default class MainPage extends React.Component {
         }));
     };
 
-    sendMessege() {
+    sendMessage() {
         this.appendMessage("You: " + this.refs.messageInput.value);
         socket.emit('send-chat-message', this.refs.messageInput.value);
         this.refs.messageInput.value = "";
@@ -65,13 +65,13 @@ export default class MainPage extends React.Component {
     appendMessage(message) {
         let messageElement = document.createElement('div');
         let messageContainer = document.getElementById('chatWindow');
-
+     
         messageElement.innerText = message;
         if (messageContainer) {
             messageContainer.append(messageElement);
         }
 
-        // messageContainer.append(<MessegeItem userMessage={message}></MessegeItem>);
+        // messageContainer.append(<MessageItem userMessage={message}></MessageItem>);
     }
 
     render() {
@@ -91,7 +91,7 @@ export default class MainPage extends React.Component {
                     {this.state.view ?
                         <div>
                             <div id="chatWindow" style={{ display: "flex", flexDirection: "column", backgroundColor: "#36393F", width: "80%", height: "80%", overflow: "auto", position: "absolute" }}>
-                                <MessegeItem userMessage={this.state.response}></MessegeItem>
+                                <MessageItem userMessage={this.state.response}></MessageItem>
                             </div>
 
                         </div>
@@ -101,7 +101,7 @@ export default class MainPage extends React.Component {
                     }
                     <div style={{ display: "flex", backgroundColor: "#40444B", position: "absolute", bottom: 25, width: "70%", height: 50, }}>
                         <input style={{ width: "70%", fontSize: "80%", color: "white", paddingLeft: 10, backgroundColor: "#40444B", border: "0px" }} id="messageInput" type="text" ref="messageInput" />
-                        <button style={{ width: "30%" }} id="send-button" onClick={() => this.sendMessege()}>Send</button>
+                        <button style={{ width: "30%" }} id="send-button" onClick={() => this.sendMessage()}>Send</button>
                     </div>
                 </div>
             </div>

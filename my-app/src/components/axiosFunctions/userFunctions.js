@@ -23,8 +23,8 @@ export const registerUser = (userObject) => {
 export const loginUser = (userObject) => {
     return axios.post('http://localhost:8080/api/login', userObject)
         .then(response => {
-            console.log("loginUser() ", response.data);
-            return response.data;
+            //console.log("loginUser() ", response.data);         
+            return response;
         })
         .catch(function (error) {
             if (error == "Error: Request failed with status code 409") {
@@ -32,18 +32,16 @@ export const loginUser = (userObject) => {
                 return error.response;
             }
             if (error == "Error: Network Error") {
-                console.log("postUser() Network Error: ", error);
-                return;
+                console.log("loginUser() Network Error: ", error);               
             }
             console.log("error", error);
-            return error;
         });
 };
 
 export const getUsers = () => {
     return axios.get('http://localhost:8080/api/users')
         .then(response => {
-            console.log("getusers() ", response.data);
+           // console.log("getusers() ", response.data);
             return response.data.users;
         })
         .catch(function (error) {

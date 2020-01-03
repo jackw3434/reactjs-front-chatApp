@@ -11,91 +11,90 @@ export default class UserList extends React.Component {
         };
     }
 
-    editUserButton() {
+    // editUserButton() {
 
-        let { name, email, password } = this.state;
+    //     let { name, email, password } = this.state;
 
-        if (!name || !email || !password) {
-            console.log("Missing Form Fields");
-        } else {
+    //     if (!name || !email || !password) {
+    //         console.log("Missing Form Fields");
+    //     } else {
 
-            let editedUser = {
-                "name": name,
-                "email": email,
-                "password": password
-            };
+    //         let editedUser = {
+    //             "name": name,
+    //             "email": email,
+    //             "password": password
+    //         };
 
-            editUserByID(this.props.users[0].id, editedUser)
-                .then(response => {
-                    getUsers().then(response => {
-                        this.props.view(response);
-                    });
-                })
+    //         editUserByID(this.props.users[0].id, editedUser)
+    //             .then(response => {
+    //                 getUsers().then(response => {
+    //                     this.props.view(response);
+    //                 });
+    //             })
 
-            this.refs.name.value = "";
-            this.refs.email.value = "";
-            this.refs.password.value = "";
-            this.setState({ name: "", email: "", password: "" });
-        }
-    }
+    //         this.refs.name.value = "";
+    //         this.refs.email.value = "";
+    //         this.refs.password.value = "";
+    //         this.setState({ name: "", email: "", password: "" });
+    //     }
+    // }
 
-    postUserButton() {
+    // postUserButton() {
 
-        let { name, email, password } = this.state;
+    //     let { name, email, password } = this.state;
 
-        if (!name || !email || !password) {
-            console.log("Missing Form Fields");
-        } else {
+    //     if (!name || !email || !password) {
+    //         console.log("Missing Form Fields");
+    //     } else {
 
-            let newUser = {
-                "name": name,
-                "email": email,
-                "password": password
-            };
+    //         let newUser = {
+    //             "name": name,
+    //             "email": email,
+    //             "password": password
+    //         };
 
-            postUser(newUser)
-                .then(response => {
-                    getUsers().then(response => {
-                        this.props.view(response);
-                    });
-                })
+    //         postUser(newUser)
+    //             .then(response => {
+    //                 getUsers().then(response => {
+    //                     this.props.view(response);
+    //                 });
+    //             })
 
-            this.refs.name.value = "";
-            this.refs.email.value = "";
-            this.refs.password.value = "";
-            this.setState({ name: "", email: "", password: "" });
-        }
-    }
+    //         this.refs.name.value = "";
+    //         this.refs.email.value = "";
+    //         this.refs.password.value = "";
+    //         this.setState({ name: "", email: "", password: "" });
+    //     }
+    // }
 
-    deleteUserButton() {
-        if (this.props.users && this.props.users[0]) {
-            // deleting the first user of the list, test purposes
-            deleteUser(this.props.users[0].id).then(response => {
-                getUsers().then(response => {
-                    this.props.view(response);
-                });
-            });
-        } else {
-            console.log("No Users in the List to delete");
-        }
-    }
+    // deleteUserButton() {
+    //     if (this.props.users && this.props.users[0]) {
+    //         // deleting the first user of the list, test purposes
+    //         deleteUser(this.props.users[0].id).then(response => {
+    //             getUsers().then(response => {
+    //                 this.props.view(response);
+    //             });
+    //         });
+    //     } else {
+    //         console.log("No Users in the List to delete");
+    //     }
+    // }
 
-    setName(name) {
-        this.setState({ name: name.target.value })
-    };
+    // setName(name) {
+    //     this.setState({ name: name.target.value })
+    // };
 
-    setEmail(email) {
-        this.setState({ email: email.target.value })
-    };
+    // setEmail(email) {
+    //     this.setState({ email: email.target.value })
+    // };
 
-    setPassword(password) {
-        this.setState({ password: password.target.value })
-    };
+    // setPassword(password) {
+    //     this.setState({ password: password.target.value })
+    // };
 
     render() {
         return (
             <div>
-
                 {this.props.users ?
                     <div>
                         <p>{this.props.listTitle}</p>
@@ -110,8 +109,7 @@ export default class UserList extends React.Component {
                     :
                     <p>Users Not Found</p>
                 }
-                <div>
-
+                {/* <div>
                     <input placeholder="Name" type="text" ref="name" onChange={(name) => this.setName(name)} /><br />
                     <input placeholder="Email" type="text" ref="email" onChange={(email) => this.setEmail(email)} /><br />
                     <input placeholder="Password" type="text" ref="password" onChange={(password) => this.setPassword(password)} /><br />
@@ -119,8 +117,7 @@ export default class UserList extends React.Component {
                     <button onClick={() => this.postUserButton()}>Post New user, Get and refresh</button>
                     <button onClick={() => this.deleteUserButton()}>Delete First user</button>
                     <button onClick={() => this.editUserButton()}>Edit First user</button>
-                </div>
-
+                </div> */}
             </div>
         )
     }
