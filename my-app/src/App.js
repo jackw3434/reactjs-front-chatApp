@@ -12,7 +12,7 @@ export default class App extends React.Component {
     };
   }
 
-  render() {
+  render() {    
     return (
       <Router>       
           <Switch>

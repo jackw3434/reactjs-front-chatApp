@@ -13,6 +13,10 @@ export default class LoginPage extends React.Component {
         };
     }
 
+    componentDidMount() {
+        localStorage.clear();
+    }
+
     loginButton() {
 
         let { email, password } = this.state;
@@ -28,11 +32,19 @@ export default class LoginPage extends React.Component {
 
             loginUser(user)
                 .then(response => {
-                    if (response.data.successMessage == "User Logged In" && response.data.accessToken) {
-                        this.setState({ redirect: true, userData: response.data });
-                        console.log("redirecting ");
+                    if (response && response.data.successMessage === "User Logged In" && response.data.accessToken) {
+
+                        localStorage.setItem("user_id", response.data.userData._id);
+                        localStorage.setItem("first_name", response.data.userData.first_name);
+                        localStorage.setItem("surname", response.data.userData.surname);
+                        localStorage.setItem("email", response.data.userData.email);
+                        localStorage.setItem("token", response.data.accessToken);
+
+                        this.setState({ redirect: true });
+                        console.log("Logging in, redirecting ");
                     } else {
                         console.log("failed login response : ", response);
+                        return;
                     }
                 });
 
@@ -52,10 +64,8 @@ export default class LoginPage extends React.Component {
 
     render() {
         const { redirect } = this.state;
-
         if (redirect) {
-            let user = this.state.userData
-            return <Redirect from='/login' to={{ pathname: '/main', state: { user } }} />;
+            return <Redirect from='/login' to={{ pathname: '/main' }} />;
         }
         return (
             <div style={{
