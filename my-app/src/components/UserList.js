@@ -6,12 +6,19 @@ export default class UserList extends React.Component {
         this.state = {};
     }
 
-    openThisFriendsChatWindow() {
-
+    openThisFriendsChatWindow(user) {
+        //console.log(user);
+        this.props.view(user);
     }
 
-    mouseOver() {
+    mouseOver(divID) {
+        let friendElement = document.getElementById(divID);
+        friendElement.style.backgroundColor = "#595d66"   
+    }
 
+    mouseLeave(divID) {
+        let friendElement = document.getElementById(divID);
+        friendElement.style.backgroundColor = "#2F3136"
     }
 
     render() {
@@ -21,8 +28,14 @@ export default class UserList extends React.Component {
                     <div style={{ paddingLeft: 10 }}>
                         <p>{this.props.listTitle}</p>
                         {this.props.users.map((user, index) =>
-                            <div id={user._id} onMouseOver={() => this.mouseOver()} style={{ paddingLeft: 10 }} onClick={() => this.openThisFriendsChatWindow()} key={index} >
-                                <p>{user.first_name + " " + user.surname}</p>
+                            <div id={user.friend.email}
+                                ref="friend"
+                                onMouseOver={() => this.mouseOver(user.friend.email)}
+                                onMouseLeave={() => this.mouseLeave(user.friend.email)}
+                                style={{ paddingLeft: 10 }}
+                                onClick={() => this.openThisFriendsChatWindow(user)}
+                                key={index} >
+                                <p>{user.friend.first_name + " " + user.friend.surname}</p>
                             </div>
                         )}
                     </div>

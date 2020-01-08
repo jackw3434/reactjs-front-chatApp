@@ -4,6 +4,7 @@ const port = 8000;
 axios.defaults.headers.common['Authorization'] = localStorage.getItem("token");
 
 export const registerUser = (userObject) => {
+    localStorage.clear();
     return axios.post('http://localhost:' + port + '/api/register', userObject)
         .then(response => {
             console.log("registerUser() ", response.data);
@@ -19,8 +20,7 @@ export const registerUser = (userObject) => {
                 return "Error: Network Error";
             }
             if (error.response.data.includes("UnauthorizedError: jwt expired")) {
-                // console.log("UnauthorizedError: jwt expired");
-                localStorage.clear();
+                // console.log("UnauthorizedError: jwt expired");               
                 registerUser(userObject);
                 return "UnauthorizedError: jwt expired, clearing cache and retrying";
             }
@@ -30,6 +30,7 @@ export const registerUser = (userObject) => {
 };
 
 export const loginUser = (userObject) => {
+    localStorage.clear();
     return axios.post('http://localhost:' + port + '/api/login', userObject)
         .then(response => {
             //console.log("loginUser() ", response.data);
@@ -60,19 +61,15 @@ export const getUsers = () => {
             if (error === "Error: Network Error") {
                 console.log("GetUsers() Network Error: ", error);
                 return;
-            }
-            console.log("lcoalstorage  ", localStorage);
-            console.log("error.response ", error.response);
-            console.log("error.response.data ", error.response.data);
-            console.log("error.response ", error.response.statusText);
+            }            
 
-            if (error.response.data.includes("UnauthorizedError: jwt expired")) {
+            if ( error.response && error.response.data.includes("UnauthorizedError: jwt expired")) {
                 console.log("UnauthorizedError: jwt expired");
                 localStorage.clear();
                 return;
             }
 
-            return error.response;
+            return error;
         });
 };
 
