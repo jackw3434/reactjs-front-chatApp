@@ -8,6 +8,7 @@ export default class ChatWindow extends React.Component {
         super(props);
         this.state = {
             socket: socketIOClient("http://localhost:7000"),
+            message: ""
         };
     }
 
@@ -24,10 +25,7 @@ export default class ChatWindow extends React.Component {
         }
     };
     sendMessage() {
-
         // post message to db
-
-
         let emailOfMessageSender = this.props.loggedInUserEmail;
         let nameOfMessageSender = this.props.loggedInUserName;
         let message = this.refs.messageInput.value;
@@ -55,12 +53,14 @@ export default class ChatWindow extends React.Component {
 
     appendMessage(message) {
         let messageElement = document.createElement('div');
+
         let messageContainer = document.getElementById('chatWindow');
 
         messageElement.innerText = message;
         if (messageContainer) {
             messageContainer.append(messageElement);
         }
+    
     }
 
     render() {
@@ -77,6 +77,8 @@ export default class ChatWindow extends React.Component {
 
             socket.on("message", message => {
                 console.log("here", message);
+                messageLog += message;
+                this.setState({ message: message });
                 this.appendMessage(message.name + ": " + message.message);
             });
         }
@@ -89,18 +91,25 @@ export default class ChatWindow extends React.Component {
 
         return (
             <div>
-                <p>Chat Window, {name}</p>
-                <div id="chatWindow" style={{ display: "flex", flexDirection: "column", backgroundColor: "#36393F", width: "80%", height: "80%", overflow: "auto", position: "absolute" }}>
+                {name &&
+                    <p>Chat Window, {name}</p>
+                }
+                <div id="chatWindow" style={{ display: "flex", flexDirection: "column", backgroundColor: "#36393F", width: "80%", height: "60%", overflow: "auto", position: "absolute", bottom: 90 }}>
 
                     {messageLog && messageLog.map((message, index) =>
-                        <div style={{ fontSize: 10, border: "1px solid white", padding: 5, margin: 5 }} key={index}>
-                            <p>{message.date_sent}</p>
-                            <p>{message.nameOfMessageSender}</p>
-                            <p>{message.message}</p>
+                        // <div style={{ fontSize: 10, border: "1px solid white", padding: 5, margin: 5 }} key={index}>                            
+                        //     <p>{message.nameOfMessageSender}</p>
+                        //     <p>{message.message}</p>
+                        //     <p>{message.date_sent}</p>
+                        // </div>
+                        <div style={{ backgroundColor: "#36393F", width: "80%", height: "50%", marginLeft: 30, paddingLeft: 10, borderTop: "1px solid white", display: "flex", flexDirection: "row", }} key={index}>
+                            <p>{message.nameOfMessageSender} : </p>
+                            <p>"{message.message}"</p>
                         </div>
+
                     )}
                 </div>
-                <div style={{ display: "flex", backgroundColor: "#40444B", position: "absolute", bottom: 25, width: "70%", height: 50 }}>
+                <div style={{ display: "flex", backgroundColor: "#40444B", position: "absolute", bottom: 25, width: "70%", height: 50, border: "1px solid white" }}>
                     <input style={{ width: "70%", fontSize: "80%", color: "white", paddingLeft: 10, backgroundColor: "#40444B", border: "0px" }} id="messageInput" type="text" ref="messageInput" />
                     <button style={{ width: "30%" }} id="send-button" onClick={() => this.sendMessage()}>Send</button>
                 </div>

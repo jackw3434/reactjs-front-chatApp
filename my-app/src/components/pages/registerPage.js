@@ -10,7 +10,8 @@ export default class RegisterPage extends React.Component {
             surname: "",
             email: "",
             password: "",
-            redirect: false
+            redirect: false,
+             goBack: false
         };
     }
 
@@ -51,7 +52,7 @@ export default class RegisterPage extends React.Component {
                         console.log("Generic_error: Network/JWT Issue");
                         return;
                     } else {
-                        if (response === "User: "+ email + " has been created.") {
+                        if (response === "User: " + email + " has been created.") {
                             console.log("true, redirecting", response)
                             this.setState({ redirect: true });
                             return;
@@ -83,12 +84,20 @@ export default class RegisterPage extends React.Component {
         this.setState({ password: password.target.value })
     };
 
+    goBack() {
+        this.setState({ goBack: true })
+    };
+
 
     render() {
-        const { redirect } = this.state;
+        const { redirect, goBack } = this.state;
 
         if (redirect) {
             return <Redirect to='/login' />;
+        }
+
+        if (goBack) {
+            return <Redirect to='/' />;
         }
         return (
             <div style={{
@@ -111,11 +120,13 @@ export default class RegisterPage extends React.Component {
                     <input placeholder="firstName" type="text" ref="firstName" onChange={(firstName) => this.setFirstName(firstName)} /><br />
                     <input placeholder="surname" type="text" ref="surname" onChange={(surname) => this.setSurname(surname)} /><br />
                     <input placeholder="Email" type="text" ref="email" onChange={(email) => this.setEmail(email)} /><br />
-                    <input placeholder="Password" type="text" ref="password" onChange={(password) => this.setPassword(password)} /><br />
-
-                    <button onClick={() => this.registerUserButton()}>Register New user</button>
+                    <input placeholder="Password" type="password" ref="password" onChange={(password) => this.setPassword(password)} /><br />
+                    <div style={{ display: "flex" }}>
+                        <button style={{ margin: 5 }} onClick={() => this.goBack()}>cancel</button>
+                        <button style={{ margin: 5 }} onClick={() => this.registerUserButton()}>Register New user</button>
+                    </div>
                 </div>
-            </div>
+            </div >
         )
     }
 }

@@ -20,7 +20,7 @@ export default class MainPage extends React.Component {
             friendRequests: [],
             friendsList: [],
             currentChattingFriend: [],
-            appendMessage: ""
+            appendMessage: "",
         };
     }
 
@@ -35,7 +35,16 @@ export default class MainPage extends React.Component {
             let userEmail = localStorage.getItem("email");
 
             getMyFriendRequests().then(foundFriendRequests => {
-                // console.log("foundFriendRequests ", foundFriendRequests);
+
+                console.log("foundFriendRequests ", foundFriendRequests);
+                foundFriendRequests.map(request => {
+                    if (request.sender == userEmail) {
+                        request.sender = "You have sent a friend request to: " + request.sender;                   
+                    } else {
+                        request.sender = "New friend request from: " + request.sender;                  
+                    }
+                });
+
                 getMyFriendsList().then(foundfriendsList => {
                     // console.log("foundfriendsList ", foundfriendsList);
 
@@ -62,7 +71,7 @@ export default class MainPage extends React.Component {
                 })
             })
         }
-    };    
+    };
 
     logout() {
         localStorage.clear();
@@ -75,19 +84,24 @@ export default class MainPage extends React.Component {
 
     sendFriendRequest() {
         let friendEmail = this.refs.friendEmail.value;
+        let friends = [];
+        let userEmail = localStorage.getItem("email");
 
         if (friendEmail === "") {
             console.log("Missing for field");
         } else {
             sendFriendRequest(friendEmail).then(response => {
                 getMyFriendRequests().then(foundFriendRequests => {
-                    this.setState({ friendRequests: foundFriendRequests });             
+                    foundFriendRequests.map(request => {
+                        if (request.sender == userEmail) {
+                            request.receiver = "You have sent a friend request to: " + request.receiver;                   
+                        } else {
+                            request.sender = "New friend request from: " + request.sender;                  
+                        }
+                    });
+                    this.setState({ friendRequests: foundFriendRequests });
                 })
                 getMyFriendsList().then(foundfriendsList => {
-                    console.log("Accepted, getting LIST! ", foundfriendsList);
-
-                    let friends = [];
-                    let userEmail = localStorage.getItem("email");
 
                     foundfriendsList.map((userFriends) => {
                         userFriends.friendObjects.map(friend => {
@@ -106,7 +120,7 @@ export default class MainPage extends React.Component {
                 })
             })
         }
-    };    
+    };
 
     changeFriendWindow(friend) {
         console.log("friend ", friend);
@@ -130,10 +144,10 @@ export default class MainPage extends React.Component {
                 <div className="friendsList" style={{ backgroundColor: "#2F3136", width: "20%", height: "100%", overflow: "auto" }}>
 
                     {/* logout send friend request */}
-                    <div style={{ display: "flex", flexDirection: "column", width: "70%", alignItems: "center" }}>
-                        <button style={{ margin: 2 }} id="logout" onClick={() => this.logout()}>Logout</button>
-                        <button style={{ margin: 2 }} id="addFriend" onClick={() => this.sendFriendRequest()}>sendFriendRequest</button>
-                        <input style={{ width: "70%", fontSize: "80%", color: "white", paddingLeft: 10, backgroundColor: "#40444B", border: "0px", margin: 2 }} placeholder="enter friends email" id="friendEmail" type="text" ref="friendEmail" />
+                    <div style={{ display: "flex", flexDirection: "column", width: "70%", alignItems: "center", marginLeft: 20 }}>
+                        <button style={{ margin: 2, marginTop: 20 }} id="logout" onClick={() => this.logout()}>Logout</button>
+                        <button style={{ margin: 2, marginTop: 10, marginBottom: 10 }} id="addFriend" onClick={() => this.sendFriendRequest()}>sendFriendRequest</button>
+                        <input style={{ marginLeft: 10, width: "100%", height: 40, fontSize: "70%", color: "white", paddingLeft: 10, backgroundColor: "#40444B", border: "0px", margin: 2 }} placeholder="enter friends email" id="friendEmail" type="text" ref="friendEmail" />
                     </div>
 
                     {/* Display friend Requests */}
@@ -141,11 +155,11 @@ export default class MainPage extends React.Component {
                         <p>Friends Requests</p>
                         <div id="friendRequestContainer">
                             {this.state.friendRequests.map((friendRequest, index) =>
-                                <div style={{ fontSize: 10, border: "1px solid white", padding: 5, margin: 5 }} key={index}>
-                                    <p>{friendRequest.status}</p>
+                                <div style={{ fontSize: 16, border: "1px solid white", padding: 5, margin: 5}} key={index}>
                                     <p>{friendRequest.sender}</p>
-                                    <p>{friendRequest.receiver}</p>
-                                    <p>{friendRequest.date_request_sent}</p>
+                                    <p>Status: <b>{friendRequest.status}</b></p>
+                                    {/* <p>{friendRequest.receiver}</p> */}
+                                    {/* <p>{friendRequest.date_request_sent}</p> */}
                                 </div>
                             )}
                         </div>
@@ -167,8 +181,12 @@ export default class MainPage extends React.Component {
                     </div>
                     {/* send currentChattingFriend to the component */}
 
-                    <ChatWindow friendInstance={this.state.currentChattingFriend} appendMessage={this.state.appendMessage} loggedInUserName={this.state.userFirstName} loggedInUserEmail={this.state.userEmail}></ChatWindow>
-
+                    <ChatWindow
+                        friendInstance={this.state.currentChattingFriend}
+                        appendMessage={this.state.appendMessage}
+                        loggedInUserName={this.state.userFirstName}
+                        loggedInUserEmail={this.state.userEmail}>
+                    </ChatWindow>
                 </div>
             </div >
         );

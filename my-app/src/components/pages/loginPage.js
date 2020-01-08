@@ -9,7 +9,8 @@ export default class LoginPage extends React.Component {
             email: "",
             password: "",
             redirect: false,
-            userData: ""
+            userData: "",
+            goBack: false
         };
     }
 
@@ -62,10 +63,18 @@ export default class LoginPage extends React.Component {
         this.setState({ password: password.target.value })
     };
 
+    goBack() {
+        this.setState({ goBack: true })
+    };
+
     render() {
-        const { redirect } = this.state;
+        const { redirect, goBack } = this.state;
         if (redirect) {
             return <Redirect from='/login' to={{ pathname: '/main' }} />;
+        }
+
+        if (goBack) {
+            return <Redirect to='/' />;
         }
         return (
             <div style={{
@@ -86,9 +95,12 @@ export default class LoginPage extends React.Component {
                     alignItems: "center"
                 }}>
                     <input placeholder="Email" type="text" ref="email" onChange={(email) => this.setEmail(email)} /><br />
-                    <input placeholder="Password" type="text" ref="password" onChange={(password) => this.setPassword(password)} /><br />
+                    <input placeholder="Password" type="password" ref="password" onChange={(password) => this.setPassword(password)} /><br />
 
-                    <button onClick={() => this.loginButton()}>Login</button>
+                    <div style={{ display: "flex" }}>
+                        <button style={{ margin: 5, }} onClick={() => this.goBack()}>cancel</button>
+                        <button style={{ margin: 5 }} onClick={() => this.loginButton()}>Login</button>
+                    </div>
                 </div>
             </div>
         )

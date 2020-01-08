@@ -19,10 +19,10 @@ export default class RootPage extends React.Component {
                 justifyContent: "center",
                 alignItems: "center"
             }}>
-                <h1 style={{ color: "white" }}>Welcome To Chapppie</h1>
-                <Link to="/main"><p style={{ color: "white" }}>go to main</p></Link>
-                <Link to="/login"><p style={{ color: "white" }}>login</p></Link>
-                <Link to="/register"><p style={{ color: "white" }}>Register</p></Link>
+                <h1 style={{ color: "white", textDecoration: "underline" }}>Welcome To Chappie</h1>
+                <h2 style={{ color: "white", textDecoration: "underline"  }}>A Chatting Application</h2>
+                <Link to="/login"><h3 style={{ color: "white" }}>login</h3></Link>
+                <Link to="/register"><h3 style={{ color: "white" }}>Register</h3></Link>
             </div>
         )
     }
