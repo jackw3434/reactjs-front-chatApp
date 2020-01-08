@@ -16,7 +16,7 @@ export const sendFriendRequest = (friendEmail) => {
         friendRequestObject,
         { headers: { Authorization: localStorage.getItem("token") } }
     ).then(response => {
-       console.log("sendFriendRequest() ", response.data);
+        console.log("sendFriendRequest() ", response.data);
         return response.data;
     }).catch(function (error) {
 
@@ -38,7 +38,7 @@ export const getMyFriendRequests = () => {
     return axios.get('http://localhost:' + port + '/api/friendRequest/me',
         { headers: { Authorization: localStorage.getItem("token") } })
         .then(response => {
-           // console.log("getMyFriendRequests() ", response.data.foundFriendRequests);
+            // console.log("getMyFriendRequests() ", response.data.foundFriendRequests);
             return response.data.foundFriendRequests;
         })
         .catch(function (error) {
@@ -60,10 +60,10 @@ export const getMyFriendsList = () => {
     return axios.get('http://localhost:' + port + '/api/friendsList/me',
         { headers: { Authorization: localStorage.getItem("token") } })
         .then(response => {
-           // console.log("getMyFriendList() ", response);
-           if(response === undefined){
-            return "You have no friends yet!";
-           }
+            // console.log("getMyFriendList() ", response);
+            if (response === undefined) {
+                return "You have no friends yet!";
+            }
             return response.data.friendsList;
         })
         .catch(function (error) {
@@ -78,4 +78,30 @@ export const getMyFriendsList = () => {
             console.log("error", error.response);
             return error.response;
         });
+};
+
+export const sendMessageToFriend = (frienshipID, messageToSend) => {
+
+    return axios.post('http://localhost:' + port + '/api/friend/sendMessage',
+        {
+            frienshipID,
+            messageToSend
+        },
+        { headers: { Authorization: localStorage.getItem("token") } }
+    ).then(response => {
+        console.log("sendMessageToFriend() ", response.data);
+        return response.data;
+    }).catch(function (error) {
+
+        if (error === "Error: Request failed with status code 409") {
+            console.log(error.response);
+            return error.response;
+        }
+        if (error === "Error: Network Error") {
+            console.log("sendFriendRequest() Network Error: ", error);
+            return;
+        }
+        console.log("error", error.response);
+        return error.response;
+    });
 };

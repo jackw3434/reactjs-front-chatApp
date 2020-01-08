@@ -62,29 +62,7 @@ export default class MainPage extends React.Component {
                 })
             })
         }
-    };
-
-    componentDidUpdate() {
-
-       let { socket } = this.state;
-
-        // socket.on("chat-message", data => {
-        //     this.appendMessage(data.name + ": " + data.message);
-        // });
-
-        // if (this.state.view && this.state.userFirstName) {
-        //     this.appendMessage("You Joined");
-           //  socket.emit("new-user", "main page");
-        // }
-
-        // socket.on("user-connected", name => {
-        //     this.appendMessage(name + " connected");
-        // });
-
-        // socket.on("user-disconnected", name => {
-        //     this.appendMessage(name + " disconnected");
-        // });
-    };  
+    };    
 
     logout() {
         localStorage.clear();
@@ -103,8 +81,7 @@ export default class MainPage extends React.Component {
         } else {
             sendFriendRequest(friendEmail).then(response => {
                 getMyFriendRequests().then(foundFriendRequests => {
-                    this.setState({ friendRequests: foundFriendRequests });
-                    // return;
+                    this.setState({ friendRequests: foundFriendRequests });             
                 })
                 getMyFriendsList().then(foundfriendsList => {
                     console.log("Accepted, getting LIST! ", foundfriendsList);
@@ -129,24 +106,7 @@ export default class MainPage extends React.Component {
                 })
             })
         }
-    };
-
-    // sendMessage() {
-    //     this.appendMessage("You: " + this.refs.messageInput.value);
-    //     this.state.socket.emit('send-chat-message', this.refs.messageInput.value);
-    //     this.refs.messageInput.value = "";
-    // };
-
-    // appendMessage(message) {
-    //    // console.log(message);
-    //     let messageElement = document.createElement('div');
-    //     let messageContainer = document.getElementById('chatWindow');
-
-    //     messageElement.innerText = message;
-    //     if (messageContainer) {
-    //         messageContainer.append(messageElement);
-    //     }
-    // }
+    };    
 
     changeFriendWindow(friend) {
         console.log("friend ", friend);
@@ -154,7 +114,6 @@ export default class MainPage extends React.Component {
     };
 
     render() {
-        // console.log("current chatting friend ",this.state.currentChattingFriend);
 
         if (this.state.logoutUser) {
             return <Redirect to='/' />;
@@ -208,7 +167,7 @@ export default class MainPage extends React.Component {
                     </div>
                     {/* send currentChattingFriend to the component */}
 
-                    <ChatWindow friendInstance={this.state.currentChattingFriend} appendMessage={this.state.appendMessage} loggedInUserName={this.state.userFirstName}></ChatWindow>
+                    <ChatWindow friendInstance={this.state.currentChattingFriend} appendMessage={this.state.appendMessage} loggedInUserName={this.state.userFirstName} loggedInUserEmail={this.state.userEmail}></ChatWindow>
 
                 </div>
             </div >
