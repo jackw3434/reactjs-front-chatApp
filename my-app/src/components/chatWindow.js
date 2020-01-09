@@ -115,7 +115,7 @@ export default class ChatWindow extends React.Component {
                 {name &&
                     <p style={{ paddingLeft: 20 }}>Chat Window, {name}</p>
                 }
-                <div id="chatWindow" style={{ display: "flex", flexDirection: "column", backgroundColor: "#36393F", width: "100%", height: "75%", overflow: "auto", position: "absolute", bottom: 90, wordBreak: "break-word" }}>
+                <div id="chatWindow" style={{ display: "flex", flexDirection: "column", backgroundColor: "#36393F", width: "80%", height: "75%", overflow: "auto", position: "absolute", bottom: 90, wordBreak: "break-word" }}>
                     {messageLog && messageLog.map((message, index) =>
                         <div style={{ backgroundColor: "#36393F", width: "80%", height: "100%", marginLeft: 30, paddingLeft: 10, borderTop: "1px solid white" }} key={index}>
                             <div style={{ display: "flex", flexDirection: "row", height: "40px" }}>

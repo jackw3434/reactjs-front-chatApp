@@ -40,7 +40,7 @@ export default class MainPage extends React.Component {
                 if (foundFriendRequests) {
                     foundFriendRequests.map(request => {
                         if (request.sender == userEmail) {
-                            request.sender = "You have sent a friend request to: " + request.sender;
+                            request.sender = "You have sent a friend request to: " + request.receiver;
                         } else {
                             request.sender = "New friend request from: " + request.sender;
                         }
@@ -95,7 +95,7 @@ export default class MainPage extends React.Component {
                 getMyFriendRequests().then(foundFriendRequests => {
                     foundFriendRequests.map(request => {
                         if (request.sender == userEmail) {
-                            request.receiver = "You have sent a friend request to: " + request.receiver;
+                            request.sender = "You have sent a friend request to: " + request.receiver;
                         } else {
                             request.sender = "New friend request from: " + request.sender;
                         }
