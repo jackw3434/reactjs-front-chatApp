@@ -6,41 +6,74 @@ export default class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
+            first_name: "",
+            surname: "",
             email: "",
             password: "",
-            redirect: false
+            redirect: false,
+             goBack: false
         };
     }
 
     registerUserButton() {
 
-        let { name, email, password } = this.state;
+        let { first_name, surname, email, password } = this.state;
 
-        if (!name || !email || !password) {
+        if (!first_name || !surname || !email || !password) {
             console.log("Missing Form Fields");
         } else {
 
             let newUser = {
-                "name": name,
+                "first_name": first_name,
+                "surname": surname,
                 "email": email,
                 "password": password
             };
 
             registerUser(newUser)
                 .then(response => {
-                    this.setState({ redirect: true });
+
+                    if (response === "Error: Request failed with status code 409") {
+                        console.log("User with that email already exists");
+                        return;
+                    }
+
+                    if (response === "UnauthorizedError: jwt expired, clearing cache and retrying") {
+                        console.log("UnauthorizedError: jwt expired, clearing cache and retrying");
+                        return;
+                    }
+
+                    if (response === "Error: Network Error") {
+                        console.log("Error: Network Error, server not running");
+                        return;
+                    }
+
+                    if (response === undefined) {
+                        console.log("Generic_error: Network/JWT Issue");
+                        return;
+                    } else {
+                        if (response === "User: " + email + " has been created.") {
+                            console.log("true, redirecting", response)
+                            this.setState({ redirect: true });
+                            return;
+                        }
+                    }
                 })
 
-            this.refs.name.value = "";
+            this.refs.firstName.value = "";
+            this.refs.surname.value = "";
             this.refs.email.value = "";
             this.refs.password.value = "";
-            this.setState({ name: "", email: "", password: "" });
+            this.setState({ first_name: "", surname: "", email: "", password: "" });
         }
     }
 
-    setName(name) {
-        this.setState({ name: name.target.value })
+    setFirstName(firstName) {
+        this.setState({ first_name: firstName.target.value })
+    };
+
+    setSurname(surname) {
+        this.setState({ surname: surname.target.value })
     };
 
     setEmail(email) {
@@ -51,12 +84,20 @@ export default class RegisterPage extends React.Component {
         this.setState({ password: password.target.value })
     };
 
+    goBack() {
+        this.setState({ goBack: true })
+    };
+
 
     render() {
-        const { redirect } = this.state;
+        const { redirect, goBack } = this.state;
 
         if (redirect) {
             return <Redirect to='/login' />;
+        }
+
+        if (goBack) {
+            return <Redirect to='/' />;
         }
         return (
             <div style={{
@@ -76,13 +117,16 @@ export default class RegisterPage extends React.Component {
                     justifyContent: "center",
                     alignItems: "center"
                 }}>
-                    <input placeholder="Name" type="text" ref="name" onChange={(name) => this.setName(name)} /><br />
+                    <input placeholder="firstName" type="text" ref="firstName" onChange={(firstName) => this.setFirstName(firstName)} /><br />
+                    <input placeholder="surname" type="text" ref="surname" onChange={(surname) => this.setSurname(surname)} /><br />
                     <input placeholder="Email" type="text" ref="email" onChange={(email) => this.setEmail(email)} /><br />
-                    <input placeholder="Password" type="text" ref="password" onChange={(password) => this.setPassword(password)} /><br />
-
-                    <button onClick={() => this.registerUserButton()}>Register New user</button>
+                    <input placeholder="Password" type="password" ref="password" onChange={(password) => this.setPassword(password)} /><br />
+                    <div style={{ display: "flex" }}>
+                        <button style={{ margin: 5 }} onClick={() => this.goBack()}>cancel</button>
+                        <button style={{ margin: 5 }} onClick={() => this.registerUserButton()}>Register New user</button>
+                    </div>
                 </div>
-            </div>
+            </div >
         )
     }
 }

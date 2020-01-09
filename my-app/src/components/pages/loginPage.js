@@ -9,8 +9,13 @@ export default class LoginPage extends React.Component {
             email: "",
             password: "",
             redirect: false,
-            userData: ""
+            userData: "",
+            goBack: false
         };
+    }
+
+    componentDidMount() {
+        localStorage.clear();
     }
 
     loginButton() {
@@ -28,11 +33,19 @@ export default class LoginPage extends React.Component {
 
             loginUser(user)
                 .then(response => {
-                    if (response.data.successMessage == "User Logged In" && response.data.accessToken) {
-                        this.setState({ redirect: true, userData: response.data });
-                        console.log("redirecting ");
+                    if (response && response.data.successMessage === "User Logged In" && response.data.accessToken) {
+
+                        localStorage.setItem("user_id", response.data.userData._id);
+                        localStorage.setItem("first_name", response.data.userData.first_name);
+                        localStorage.setItem("surname", response.data.userData.surname);
+                        localStorage.setItem("email", response.data.userData.email);
+                        localStorage.setItem("token", response.data.accessToken);
+
+                        this.setState({ redirect: true });
+                        console.log("Logging in, redirecting ");
                     } else {
                         console.log("failed login response : ", response);
+                        return;
                     }
                 });
 
@@ -50,12 +63,18 @@ export default class LoginPage extends React.Component {
         this.setState({ password: password.target.value })
     };
 
-    render() {
-        const { redirect } = this.state;
+    goBack() {
+        this.setState({ goBack: true })
+    };
 
+    render() {
+        const { redirect, goBack } = this.state;
         if (redirect) {
-            let user = this.state.userData
-            return <Redirect from='/login' to={{ pathname: '/main', state: { user } }} />;
+            return <Redirect from='/login' to={{ pathname: '/main' }} />;
+        }
+
+        if (goBack) {
+            return <Redirect to='/' />;
         }
         return (
             <div style={{
@@ -76,9 +95,12 @@ export default class LoginPage extends React.Component {
                     alignItems: "center"
                 }}>
                     <input placeholder="Email" type="text" ref="email" onChange={(email) => this.setEmail(email)} /><br />
-                    <input placeholder="Password" type="text" ref="password" onChange={(password) => this.setPassword(password)} /><br />
+                    <input placeholder="Password" type="password" ref="password" onChange={(password) => this.setPassword(password)} /><br />
 
-                    <button onClick={() => this.loginButton()}>Login</button>
+                    <div style={{ display: "flex" }}>
+                        <button style={{ margin: 5, }} onClick={() => this.goBack()}>cancel</button>
+                        <button style={{ margin: 5 }} onClick={() => this.loginButton()}>Login</button>
+                    </div>
                 </div>
             </div>
         )
