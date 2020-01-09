@@ -113,16 +113,16 @@ export default class ChatWindow extends React.Component {
         return (
             <div>
                 {name &&
-                    <p>Chat Window, {name}</p>
+                    <p style={{ paddingLeft: 20 }}>Chat Window, {name}</p>
                 }
-                <div id="chatWindow" style={{ display: "flex", flexDirection: "column", backgroundColor: "#36393F", width: "80%", height: "75%", overflow: "auto", position: "absolute", bottom: 90 }}>
+                <div id="chatWindow" style={{ display: "flex", flexDirection: "column", backgroundColor: "#36393F", width: "100%", height: "75%", overflow: "auto", position: "absolute", bottom: 90, wordBreak: "break-word" }}>
                     {messageLog && messageLog.map((message, index) =>
                         <div style={{ backgroundColor: "#36393F", width: "80%", height: "100%", marginLeft: 30, paddingLeft: 10, borderTop: "1px solid white" }} key={index}>
                             <div style={{ display: "flex", flexDirection: "row", height: "40px" }}>
                                 <p>{message.nameOfMessageSender}</p>
                                 <p style={{ fontSize: "15px", marginTop: "43px", marginLeft: "10px" }}>{new Date(message.date_sent).getHours()}:{new Date(message.date_sent).getMinutes()}</p>
                             </div>
-                            <p style={{ fontSize: "20px", marginTop: "30px" }}>{message.message}</p>
+                            <p style={{ fontSize: "20px", marginTop: "30px", maxWidth: "80%" }}>{message.message}</p>
                         </div>
                     )}
                 </div>
