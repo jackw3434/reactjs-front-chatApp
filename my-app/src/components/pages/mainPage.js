@@ -36,15 +36,16 @@ export default class MainPage extends React.Component {
 
             getMyFriendRequests().then(foundFriendRequests => {
 
-                console.log("foundFriendRequests ", foundFriendRequests);
-                foundFriendRequests.map(request => {
-                    if (request.sender == userEmail) {
-                        request.sender = "You have sent a friend request to: " + request.sender;                   
-                    } else {
-                        request.sender = "New friend request from: " + request.sender;                  
-                    }
-                });
-
+               // console.log("foundFriendRequests ", foundFriendRequests);
+                if (foundFriendRequests) {
+                    foundFriendRequests.map(request => {
+                        if (request.sender == userEmail) {
+                            request.sender = "You have sent a friend request to: " + request.sender;
+                        } else {
+                            request.sender = "New friend request from: " + request.sender;
+                        }
+                    });
+                }
                 getMyFriendsList().then(foundfriendsList => {
                     // console.log("foundfriendsList ", foundfriendsList);
 
@@ -94,9 +95,9 @@ export default class MainPage extends React.Component {
                 getMyFriendRequests().then(foundFriendRequests => {
                     foundFriendRequests.map(request => {
                         if (request.sender == userEmail) {
-                            request.receiver = "You have sent a friend request to: " + request.receiver;                   
+                            request.receiver = "You have sent a friend request to: " + request.receiver;
                         } else {
-                            request.sender = "New friend request from: " + request.sender;                  
+                            request.sender = "New friend request from: " + request.sender;
                         }
                     });
                     this.setState({ friendRequests: foundFriendRequests });
@@ -123,7 +124,7 @@ export default class MainPage extends React.Component {
     };
 
     changeFriendWindow(friend) {
-        console.log("friend ", friend);
+        //console.log("friend ", friend);
         this.setState({ currentChattingFriend: friend });
     };
 
@@ -155,8 +156,8 @@ export default class MainPage extends React.Component {
                         <p>Friends Requests</p>
                         <div id="friendRequestContainer">
                             {this.state.friendRequests.map((friendRequest, index) =>
-                                <div style={{ fontSize: 16, border: "1px solid white", padding: 5, margin: 5}} key={index}>
-                                    <p>{friendRequest.sender}</p>
+                                <div style={{ fontSize: 16, border: "1px solid white", padding: 5, margin: 5, wordBreak: "break-word" }} key={index}>
+                                    <p style={{}}>{friendRequest.sender}</p>
                                     <p>Status: <b>{friendRequest.status}</b></p>
                                     {/* <p>{friendRequest.receiver}</p> */}
                                     {/* <p>{friendRequest.date_request_sent}</p> */}

@@ -35,7 +35,7 @@ export default class UserList extends React.Component {
                                 style={{ paddingLeft: 10 }}
                                 onClick={() => this.openThisFriendsChatWindow(user)}
                                 key={index} >
-                                <p>{user.friend.first_name + " " + user.friend.surname}</p>
+                                <p style={{cursor: "pointer"}}>{user.friend.first_name + " " + user.friend.surname}</p>
                             </div>
                         )}
                     </div>
